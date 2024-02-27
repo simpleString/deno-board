@@ -1,4 +1,5 @@
 import Editor from "Y/components/Editor";
+import Navbar from "Y/components/Navbar";
 import Viewer from "Y/components/Viewer";
 import {
   ResizableHandle,
@@ -9,6 +10,7 @@ import {
 export default function Home() {
   return (
     <main className="h-screen">
+      <Navbar />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel minSize={20}>
           <Editor />
