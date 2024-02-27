@@ -1,3 +1,5 @@
+import useBoard from "Y/hooks/useBoard";
+import { useBoardStore } from "Y/store";
 import dynamic from "next/dynamic";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -6,19 +8,16 @@ const MarkdownPreview = dynamic(
   { ssr: false },
 );
 
-const source = `
-# MarkdownPreview
-
-* test1
-* test2
-
-# MarkdownPreview
-`;
-
 const Viewer = () => {
+  const { getBoardState } = useBoard();
+  const { clientBoardText: boardText } = getBoardState();
+
+  const boardScale = useBoardStore((store) => store.boardScale);
+
   return (
     <MarkdownPreview
-      source={source}
+      source={boardText}
+      style={{ fontSize: `${16 * boardScale}px` }}
       className="prose"
       rehypeRewrite={(node, _index, parent) => {
         if (
