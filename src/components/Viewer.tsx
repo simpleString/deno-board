@@ -18,7 +18,7 @@ const Viewer = () => {
     <MarkdownPreview
       source={boardText}
       style={{ fontSize: `${16 * boardScale}px` }}
-      className="prose"
+      className="prose w-full break-words p-2"
       rehypeRewrite={(node, _index, parent) => {
         if (
           // @ts-ignore

@@ -1,6 +1,6 @@
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
-import CodeMirror, { type ViewUpdate } from "@uiw/react-codemirror";
+import CodeMirror, { EditorView, type ViewUpdate } from "@uiw/react-codemirror";
 import React from "react";
 import { historyField } from "@codemirror/commands";
 import useBoard from "Y/hooks/useBoard";
@@ -27,11 +27,14 @@ const Editor = () => {
     <CodeMirror
       value={boardText}
       theme="dark"
-      style={{ fontSize: `${16 * boardScale}px` }}
+      style={{
+        fontSize: `${16 * boardScale}px`,
+      }}
       className="h-full"
       height="100%"
       extensions={[
         markdown({ base: markdownLanguage, codeLanguages: languages }),
+        EditorView.lineWrapping,
       ]}
       onChange={onChange}
       initialState={
