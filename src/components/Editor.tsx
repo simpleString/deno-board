@@ -3,7 +3,7 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import CodeMirror, { EditorView, type ViewUpdate } from "@uiw/react-codemirror";
 import useBoard from "Y/hooks/useBoard";
-import { useBoardStore } from "Y/store";
+import { useBoardStore, useClientStore } from "Y/store";
 import { api } from "Y/utils/api";
 import { useSession } from "next-auth/react";
 import React from "react";
@@ -18,30 +18,34 @@ const Editor = () => {
   const boardScale = useBoardStore((store) => store.boardScale);
   const textId = useBoardStore((store) => store.textId);
 
-  const updateBoardStateMutation = api.board.update.useMutation();
+  const setIsSync = useClientStore((store) => store.setIsSync);
 
-  const debounceBoardText = useDebouncedCallback((text: string) => {
+  const updateBoardStateMutation = api.board.update.useMutation();
+  const { data: serverBoard } = api.board.get.useQuery(undefined, {
+    enabled: !!sessionData?.user,
+  });
+
+  const debounceBoardText = useDebouncedCallback(async (text: string) => {
     // if server and client exists - update remote
     if (sessionData?.user) {
-      updateBoardStateMutation.mutate({
-        id: textId,
+      await updateBoardStateMutation.mutateAsync({
+        id: serverBoard?.id ?? textId,
         text: text,
         updatedAt: new Date(),
         userId: sessionData.user.id,
       });
+      setIsSync(true);
     }
   }, 2000);
 
   const onChange = React.useCallback(
     (val: string, viewUpdate: ViewUpdate) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      console.log(viewUpdate.state);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      debounceBoardText(val);
+      setIsSync(false);
+      void debounceBoardText(val);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       updateBoardState(viewUpdate.state.toJSON(), val);
     },
-    [debounceBoardText, updateBoardState],
+    [debounceBoardText, setIsSync, updateBoardState],
   );
 
   return (

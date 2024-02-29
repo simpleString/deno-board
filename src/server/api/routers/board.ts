@@ -13,6 +13,7 @@ export const boardRouter = createTRPCRouter({
   update: protectedProcedure
     .input(BoardUpdateInputShema)
     .mutation(async ({ ctx, input }) => {
+      console.log(input);
       return ctx.db.board.upsert({
         where: {
           id: input.id,

@@ -1,5 +1,5 @@
 import Editor from "Y/components/Editor";
-import FloatingButton from "Y/components/FloatingButton";
+import FloatingButtons from "Y/components/FloatingButtons";
 import HelpDialog from "Y/components/HelpDialog";
 import Navbar from "Y/components/Navbar";
 import Viewer from "Y/components/Viewer";
@@ -31,7 +31,7 @@ export default function Home() {
 
 const FloatingWindows = () => (
   <>
-    <FloatingButton />
+    <FloatingButtons />
     <HelpDialog />
     <KeyboardHandler />
   </>

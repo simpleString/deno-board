@@ -37,7 +37,7 @@ const MergeViewer = () => {
 
   const handleAcceptCurrentChanges = async () => {
     await updateBoardStateMutation.mutateAsync({
-      id: textId,
+      id: serverBoard?.id ?? textId,
       text: clientBoardText!,
       updatedAt: new Date(),
       userId: sessionData!.user.id,

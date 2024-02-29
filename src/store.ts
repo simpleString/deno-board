@@ -58,6 +58,10 @@ interface BoardState {
 
   textId: string;
   setTextId: (textId: string) => void;
+
+  userId?: string;
+
+  setUserId: (userId: string) => void;
 }
 
 export const useBoardStore = create<
@@ -88,6 +92,10 @@ export const useBoardStore = create<
 
       setTextId(textId) {
         set({ textId });
+      },
+
+      setUserId(userId) {
+        set({ userId });
       },
     }),
     { name: "board-settings", storage },

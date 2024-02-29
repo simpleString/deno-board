@@ -26,6 +26,8 @@ const useBoard = () => {
   const updateBoardStateMutation = api.board.update.useMutation();
 
   useEffect(() => {
+    if (!sessionData?.user) return;
+
     if (!isLoading && serverBoard) {
       // If client state didn't exists, write only server state
       if (!clientBoardText) {
@@ -33,9 +35,6 @@ const useBoard = () => {
         setTextId(serverBoard.id);
         setIsSync(true);
       }
-
-      console.log("@server " + serverBoard.text);
-      console.log("@client " + clientBoardText);
 
       if (isDifferentTexts(serverBoard.text, clientBoardText!)) {
         void router.push("/merge");
@@ -46,7 +45,7 @@ const useBoard = () => {
     // If server state didn't exists
     else if (!isLoading && !serverBoard) {
       // If client state exists - sync it in server
-      if (clientBoardText && sessionData?.user) {
+      if (clientBoardText && sessionData.user) {
         updateBoardStateMutation.mutate({
           id: textId,
           text: clientBoardText,
