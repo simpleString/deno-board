@@ -9,8 +9,7 @@ const MarkdownPreview = dynamic(
 );
 
 const Viewer = () => {
-  const { getBoardState } = useBoard();
-  const { clientBoardText: boardText } = getBoardState();
+  const { boardText } = useBoard();
 
   const boardScale = useBoardStore((store) => store.boardScale);
 

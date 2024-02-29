@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { type PersistStorage, persist } from "zustand/middleware";
 import superjson from "superjson";
+import { v4 as uuid4 } from "uuid";
 
 const storage: PersistStorage<BoardState> = {
   getItem: (name) => {
@@ -20,6 +21,9 @@ interface ClientState {
 
   isHelpDialogOpen: boolean;
   setHelpDialogOpen: (isHelpDialogOpen: boolean) => void;
+
+  shoudShowMergeDialog: boolean;
+  setShoudShowMergeDialog: (shoudShowMergeDialog: boolean) => void;
 }
 
 export const useClientStore = create<ClientState>()((set) => ({
@@ -32,17 +36,28 @@ export const useClientStore = create<ClientState>()((set) => ({
   setHelpDialogOpen(isHelpDialogOpen) {
     set({ isHelpDialogOpen });
   },
+
+  shoudShowMergeDialog: false,
+
+  setShoudShowMergeDialog(shoudShowMergeDialog) {
+    set({ shoudShowMergeDialog });
+  },
 }));
 
 interface BoardState {
   boardState?: object;
   boardText?: string;
-  setBoardText: (boardText: string) => void;
-  setBoardState: (boardState: object) => void;
+  setBoardText: (boardText: string, updatedAt?: Date) => void;
+  setBoardState: (boardState: object, updatedAt?: Date) => void;
 
   boardScale: number;
   increaseBoardScale: () => void;
   decreaseBoardScale: () => void;
+
+  updatedAt?: Date;
+
+  textId: string;
+  setTextId: (textId: string) => void;
 }
 
 export const useBoardStore = create<
@@ -51,12 +66,12 @@ export const useBoardStore = create<
 >(
   persist(
     (set) => ({
-      setBoardText(boardText) {
-        set({ boardText });
+      setBoardText(boardText, updatedAt = new Date()) {
+        set({ boardText, updatedAt });
       },
 
-      setBoardState(boardState) {
-        set({ boardState });
+      setBoardState(boardState, updatedAt = new Date()) {
+        set({ boardState, updatedAt });
       },
 
       boardScale: 1,
@@ -67,6 +82,12 @@ export const useBoardStore = create<
 
       decreaseBoardScale() {
         set((state) => ({ boardScale: state.boardScale - 0.5 }));
+      },
+
+      textId: uuid4(),
+
+      setTextId(textId) {
+        set({ textId });
       },
     }),
     { name: "board-settings", storage },
