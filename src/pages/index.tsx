@@ -21,7 +21,7 @@ export default function Home() {
           <Editor />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel minSize={20}>
+        <ResizablePanel minSize={20} className=" overflow-y-auto">
           <Viewer />
         </ResizablePanel>
       </ResizablePanelGroup>

@@ -73,6 +73,18 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply bg-primary;
+  }
 }
 
 @layer components {

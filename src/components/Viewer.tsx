@@ -14,23 +14,25 @@ const Viewer = () => {
   const boardScale = useBoardStore((store) => store.boardScale);
 
   return (
-    <MarkdownPreview
-      source={boardText}
-      style={{ fontSize: `${16 * boardScale}px` }}
-      className="prose w-full break-words p-2"
-      rehypeRewrite={(node, _index, parent) => {
-        if (
-          // @ts-ignore
-          node.tagName === "a" &&
-          parent &&
-          // @ts-ignore
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          /^h(1|2|3|4|5|6)/.test(parent.tagName)
-        ) {
-          parent.children = parent.children.slice(1);
-        }
-      }}
-    />
+    <div className="flex justify-center overflow-auto">
+      <MarkdownPreview
+        source={boardText}
+        style={{ fontSize: `${16 * boardScale}px` }}
+        className="prose prose-sm prose-zinc h-screen w-full max-w-none break-words p-2 dark:prose-invert"
+        rehypeRewrite={(node, _index, parent) => {
+          if (
+            // @ts-ignore
+            node.tagName === "a" &&
+            parent &&
+            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            /^h(1|2|3|4|5|6)/.test(parent.tagName)
+          ) {
+            parent.children = parent.children.slice(1);
+          }
+        }}
+      />
+    </div>
   );
 };
 

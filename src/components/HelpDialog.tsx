@@ -1,13 +1,17 @@
+import OnboardingComponent from "Y/components/OnboardingComponent";
+import ThemeToggle from "Y/components/ThemeToggle";
 import { Button } from "Y/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogPortal,
   DialogTitle,
 } from "Y/components/ui/dialog";
 import { useClientStore } from "Y/store";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 const HelpDialog = () => {
   const { data: sessionData } = useSession();
@@ -20,6 +24,8 @@ const HelpDialog = () => {
     <Dialog open={isHelpDialogOpen} onOpenChange={setIsHelpDialogOpen}>
       <DialogContent>
         <DialogHeader>
+          <Image src="/assets/dino.png" alt="Deno" width="50" height="50" />
+          <OnboardingComponent />
           <DialogTitle className="py-4">Hotkeys</DialogTitle>
           <DialogDescription className="grid gap-6">
             <div>
@@ -30,6 +36,7 @@ const HelpDialog = () => {
               <kbd className="kdb">Ctrl</kbd> + <kbd className="kdb">-</kbd> -
               Dicrease font size
             </div>
+            <ThemeToggle />
             {sessionData?.user ? (
               <div>
                 <Button onClick={() => signOut()} className="w-full">

@@ -81,11 +81,11 @@ export const useBoardStore = create<
       boardScale: 1,
 
       increaseBoardScale() {
-        set((state) => ({ boardScale: state.boardScale + 0.5 }));
+        set((state) => ({ boardScale: state.boardScale + 0.05 }));
       },
 
       decreaseBoardScale() {
-        set((state) => ({ boardScale: state.boardScale - 0.5 }));
+        set((state) => ({ boardScale: state.boardScale - 0.05 }));
       },
 
       textId: uuid4(),
