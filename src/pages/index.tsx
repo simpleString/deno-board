@@ -1,27 +1,68 @@
+import CustomResizableHandle from "Y/components/CustomResizableHandle";
 import Editor from "Y/components/Editor";
 import FloatingButtons from "Y/components/FloatingButtons";
 import HelpDialog from "Y/components/HelpDialog";
-import Navbar from "Y/components/Navbar";
 import Viewer from "Y/components/Viewer";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "Y/components/ui/resizable";
+import { ResizablePanel, ResizablePanelGroup } from "Y/components/ui/resizable";
 import { useBoardStore } from "Y/store";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { type ImperativePanelHandle } from "react-resizable-panels";
 
 export default function Home() {
+  const leftPanelRef = useRef<ImperativePanelHandle>(null);
+  const rightPanelRef = useRef<ImperativePanelHandle>(null);
+
+  const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
+
+  const handleLeftPanel = () => {
+    if (!isRightPanelOpen) {
+      rightPanelRef.current?.expand();
+    } else {
+      leftPanelRef.current?.isExpanded()
+        ? leftPanelRef.current?.collapse()
+        : leftPanelRef.current?.expand();
+    }
+  };
+
+  const handleRightPanel = () => {
+    if (!isLeftPanelOpen) {
+      leftPanelRef.current?.expand();
+    } else {
+      rightPanelRef.current?.isExpanded()
+        ? rightPanelRef.current?.collapse()
+        : rightPanelRef.current?.expand();
+    }
+  };
+
   return (
     <main className="h-screen">
-      <Navbar />
       <FloatingWindows />
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel minSize={20}>
+      <ResizablePanelGroup direction="horizontal" autoSaveId="resize-panel">
+        <ResizablePanel
+          ref={leftPanelRef}
+          collapsedSize={0}
+          minSize={10}
+          collapsible
+          onCollapse={() => setIsLeftPanelOpen(false)}
+          onExpand={() => setIsLeftPanelOpen(true)}
+        >
           <Editor />
         </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel minSize={20} className=" overflow-y-auto">
+        <CustomResizableHandle
+          handleLeftPanel={handleLeftPanel}
+          handleRightPanel={handleRightPanel}
+          isLeftPanelOpen={isLeftPanelOpen}
+          isRightPanelOpen={isRightPanelOpen}
+        />
+        <ResizablePanel
+          collapsedSize={0}
+          minSize={10}
+          collapsible
+          ref={rightPanelRef}
+          onCollapse={() => setIsRightPanelOpen(false)}
+          onExpand={() => setIsRightPanelOpen(true)}
+        >
           <Viewer />
         </ResizablePanel>
       </ResizablePanelGroup>

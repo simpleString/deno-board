@@ -14,6 +14,7 @@ const useBoard = () => {
   const clientBoardState = useBoardStore((store) => store.boardState);
   const clientBoardText = useBoardStore((store) => store.boardText);
   const textId = useBoardStore((store) => store.textId);
+  const updatedAtClientBoardText = useBoardStore((store) => store.updatedAt);
 
   const setClientBoardState = useBoardStore((store) => store.setBoardState);
   const setClientBoardText = useBoardStore((store) => store.setBoardText);
@@ -36,7 +37,10 @@ const useBoard = () => {
         setIsSync(true);
       }
 
-      if (isDifferentTexts(serverBoard.text, clientBoardText!)) {
+      if (
+        serverBoard.updatedAt !== updatedAtClientBoardText &&
+        isDifferentTexts(serverBoard.text, clientBoardText!)
+      ) {
         void router.push("/merge");
       } else {
         setIsSync(true);

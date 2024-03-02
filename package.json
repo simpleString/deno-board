@@ -27,6 +27,7 @@
     "@trpc/next": "^10.45.1",
     "@trpc/react-query": "^10.45.1",
     "@trpc/server": "^10.45.1",
+    "@uiw/codemirror-theme-xcode": "^4.21.24",
     "@uiw/react-codemirror": "^4.21.24",
     "@uiw/react-markdown-preview": "^5.0.7",
     "class-variance-authority": "^0.7.0",
