@@ -6,12 +6,22 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogPortal,
   DialogTitle,
 } from "Y/components/ui/dialog";
 import { useClientStore } from "Y/store";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+
+const getCtrlKey = () => {
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const platform = navigator.platform ?? navigator.userAgentData.platform;
+
+  if (/IPHONE|IPAD|IPOD|MAC/.test(platform.toUpperCase())) {
+    return "⌘";
+  }
+  return "Ctrl";
+};
 
 const HelpDialog = () => {
   const { data: sessionData } = useSession();
@@ -19,6 +29,8 @@ const HelpDialog = () => {
   const setIsHelpDialogOpen = useClientStore(
     (store) => store.setHelpDialogOpen,
   );
+
+  const commandKey = getCtrlKey();
 
   return (
     <Dialog open={isHelpDialogOpen} onOpenChange={setIsHelpDialogOpen}>
@@ -29,12 +41,20 @@ const HelpDialog = () => {
           <DialogTitle className="py-4">Hotkeys</DialogTitle>
           <DialogDescription className="grid gap-6">
             <div>
-              <kbd className="kdb">Ctrl</kbd> + <kbd className="kdb">+</kbd> -
-              Increase font size
+              <kbd className="kdb">{commandKey}</kbd> +{" "}
+              <kbd className="kdb">+</kbd> - Increase font size
             </div>
             <div>
-              <kbd className="kdb">Ctrl</kbd> + <kbd className="kdb">-</kbd> -
-              Dicrease font size
+              <kbd className="kdb">{commandKey}</kbd> +{" "}
+              <kbd className="kdb">-</kbd> - Dicrease font size
+            </div>
+            <div>
+              <kbd className="kdb">{commandKey}</kbd> +{" "}
+              <kbd className="kdb">S</kbd> - Download file
+            </div>
+            <div>
+              <kbd className="kdb">{commandKey}</kbd> +{" "}
+              <kbd className="kdb">M</kbd> - Download file in markdown
             </div>
             <ThemeToggle />
             {sessionData?.user ? (

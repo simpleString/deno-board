@@ -5,10 +5,11 @@ import HelpDialog from "Y/components/HelpDialog";
 import Viewer from "Y/components/Viewer";
 import { ResizablePanel, ResizablePanelGroup } from "Y/components/ui/resizable";
 import { useBoardStore } from "Y/store";
-import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { type ImperativePanelHandle } from "react-resizable-panels";
 
-export default function Home() {
+const Home = () => {
   const leftPanelRef = useRef<ImperativePanelHandle>(null);
   const rightPanelRef = useRef<ImperativePanelHandle>(null);
 
@@ -68,19 +69,36 @@ export default function Home() {
       </ResizablePanelGroup>
     </main>
   );
-}
+};
 
 const FloatingWindows = () => (
-  <>
+  <div>
     <FloatingButtons />
     <HelpDialog />
     <KeyboardHandler />
-  </>
+  </div>
 );
 
 const KeyboardHandler = () => {
   const increaseBoardScale = useBoardStore((store) => store.increaseBoardScale);
   const decreaseBoardScale = useBoardStore((store) => store.decreaseBoardScale);
+
+  const boardText = useBoardStore((store) => store.boardText);
+
+  const downloadFile = useCallback(
+    (fileExtension: "txt" | "md") => {
+      const url = window.URL.createObjectURL(new Blob([boardText ?? ""]));
+
+      const link = document.createElement("a");
+
+      link.setAttribute("download", `deno-board.${fileExtension}`);
+
+      link.href = url;
+
+      link.click();
+    },
+    [boardText],
+  );
 
   useEffect(() => {
     window.onkeydown = (e) => {
@@ -97,8 +115,22 @@ const KeyboardHandler = () => {
         e.preventDefault();
         decreaseBoardScale();
       }
+
+      // Download file
+      if (isCrlKey && e.code === "KeyS") {
+        e.preventDefault();
+        downloadFile("txt");
+      }
+
+      // Download file md
+      if (isCrlKey && e.code === "KeyM") {
+        e.preventDefault();
+        downloadFile("md");
+      }
     };
-  }, [decreaseBoardScale, increaseBoardScale]);
+  }, [decreaseBoardScale, downloadFile, increaseBoardScale]);
 
   return undefined;
 };
+
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
