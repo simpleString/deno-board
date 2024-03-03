@@ -4,6 +4,7 @@ import { languages } from "@codemirror/language-data";
 import { xcodeDarkInit, xcodeLightInit } from "@uiw/codemirror-theme-xcode";
 import CodeMirror, { EditorView, type ViewUpdate } from "@uiw/react-codemirror";
 import useBoard from "Y/hooks/useBoard";
+import { jetBrains } from "Y/pages/_app";
 import { useBoardStore, useClientStore } from "Y/store";
 import { api } from "Y/utils/api";
 import { useSession } from "next-auth/react";
@@ -56,7 +57,12 @@ const Editor = () => {
       value={boardText}
       theme={
         resolvedTheme === "light"
-          ? xcodeLightInit({ settings: { background: "bg-background" } })
+          ? xcodeLightInit({
+              settings: {
+                background: "bg-background",
+                fontFamily: jetBrains.style.fontFamily,
+              },
+            })
           : xcodeDarkInit({ settings: { background: "bg-background" } })
       }
       style={{

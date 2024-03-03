@@ -1,9 +1,12 @@
 import { EditorState } from "@codemirror/state";
+import { xcodeLightInit, xcodeDarkInit } from "@uiw/codemirror-theme-xcode";
 import { Button } from "Y/components/ui/button";
+import { jetBrains } from "Y/pages/_app";
 import { useBoardStore } from "Y/store";
 import { api } from "Y/utils/api";
 import { EditorView } from "codemirror";
 import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
 import CodeMirrorMerge from "react-codemirror-merge";
 
@@ -11,6 +14,7 @@ const Original = CodeMirrorMerge.Original;
 const Modified = CodeMirrorMerge.Modified;
 
 const MergeViewer = () => {
+  const { resolvedTheme } = useTheme();
   const utils = api.useUtils();
   const router = useRouter();
   const { data: sessionData } = useSession({ required: true });
@@ -28,6 +32,7 @@ const MergeViewer = () => {
 
   const clientBoardText = useBoardStore((store) => store.boardText);
   const textId = useBoardStore((store) => store.textId);
+  const boardScale = useBoardStore((store) => store.boardScale);
 
   const setClientBoardText = useBoardStore((store) => store.setBoardText);
   const handleAcceptIncomeChanges = () => {
@@ -49,7 +54,22 @@ const MergeViewer = () => {
 
   return (
     <div>
-      <CodeMirrorMerge orientation="b-a" theme="dark">
+      <CodeMirrorMerge
+        orientation="b-a"
+        theme={
+          resolvedTheme === "light"
+            ? xcodeLightInit({
+                settings: {
+                  background: "bg-background",
+                  fontFamily: jetBrains.style.fontFamily,
+                },
+              })
+            : xcodeDarkInit({ settings: { background: "bg-background" } })
+        }
+        style={{
+          fontSize: `${16 * boardScale}px`,
+        }}
+      >
         <Original value={clientBoardText} />
         <Modified
           value={serverBoard?.text}
