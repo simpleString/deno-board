@@ -18,6 +18,8 @@ const storage: PersistStorage<BoardState> = {
 interface ClientState {
   isSync: boolean;
   setIsSync: (isSync: boolean) => void;
+  forceSync: boolean;
+  setForceSync: (forceSync: boolean) => void;
 
   isHelpDialogOpen: boolean;
   setHelpDialogOpen: (isHelpDialogOpen: boolean) => void;
@@ -30,6 +32,12 @@ export const useClientStore = create<ClientState>()((set) => ({
   isSync: false,
 
   setIsSync: (isSync) => set({ isSync }),
+
+  forceSync: false,
+
+  setForceSync(forceSync) {
+    set({ forceSync });
+  },
 
   isHelpDialogOpen: false,
 
@@ -60,7 +68,6 @@ interface BoardState {
   setTextId: (textId: string) => void;
 
   userId?: string;
-
   setUserId: (userId: string) => void;
 }
 

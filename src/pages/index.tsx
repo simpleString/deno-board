@@ -4,9 +4,15 @@ import FloatingButtons from "Y/components/FloatingButtons";
 import HelpDialog from "Y/components/HelpDialog";
 import Viewer from "Y/components/Viewer";
 import { ResizablePanel, ResizablePanelGroup } from "Y/components/ui/resizable";
-import { useBoardStore } from "Y/store";
+import { useBoardStore, useClientStore } from "Y/store";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { type ImperativePanelHandle } from "react-resizable-panels";
 
 const Home = () => {
@@ -38,7 +44,10 @@ const Home = () => {
 
   return (
     <main className="h-screen">
-      <FloatingWindows />
+      <FloatingWindows
+        leftPanelRef={leftPanelRef}
+        rightPanelRef={rightPanelRef}
+      />
       <ResizablePanelGroup direction="horizontal" autoSaveId="resize-panel">
         <ResizablePanel
           ref={leftPanelRef}
@@ -71,17 +80,34 @@ const Home = () => {
   );
 };
 
-const FloatingWindows = () => (
+const FloatingWindows = ({
+  leftPanelRef,
+  rightPanelRef,
+}: {
+  leftPanelRef: RefObject<ImperativePanelHandle>;
+  rightPanelRef: RefObject<ImperativePanelHandle>;
+}) => (
   <div>
     <FloatingButtons />
     <HelpDialog />
-    <KeyboardHandler />
+    <KeyboardHandler
+      leftPanelRef={leftPanelRef}
+      rightPanelRef={rightPanelRef}
+    />
   </div>
 );
 
-const KeyboardHandler = () => {
+const KeyboardHandler = ({
+  leftPanelRef,
+  rightPanelRef,
+}: {
+  leftPanelRef: RefObject<ImperativePanelHandle>;
+  rightPanelRef: RefObject<ImperativePanelHandle>;
+}) => {
   const increaseBoardScale = useBoardStore((store) => store.increaseBoardScale);
   const decreaseBoardScale = useBoardStore((store) => store.decreaseBoardScale);
+
+  const setForceSync = useClientStore((store) => store.setForceSync);
 
   const boardText = useBoardStore((store) => store.boardText);
 
@@ -127,8 +153,37 @@ const KeyboardHandler = () => {
         e.preventDefault();
         downloadFile("md");
       }
+
+      // Force sync
+      if (isCrlKey && e.code === "KeyY") {
+        e.preventDefault();
+        setForceSync(true);
+      }
+
+      // Toggle editor section
+      if (isCrlKey && e.code === "KeyB") {
+        e.preventDefault();
+        leftPanelRef.current?.isCollapsed()
+          ? leftPanelRef.current?.expand()
+          : leftPanelRef.current?.collapse();
+      }
+
+      // Toggle view section
+      if (isCrlKey && e.code === "KeyV") {
+        e.preventDefault();
+        rightPanelRef.current?.isCollapsed()
+          ? rightPanelRef.current?.expand()
+          : rightPanelRef.current?.collapse();
+      }
     };
-  }, [decreaseBoardScale, downloadFile, increaseBoardScale]);
+  }, [
+    decreaseBoardScale,
+    downloadFile,
+    increaseBoardScale,
+    leftPanelRef,
+    rightPanelRef,
+    setForceSync,
+  ]);
 
   return undefined;
 };

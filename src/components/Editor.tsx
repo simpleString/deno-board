@@ -9,7 +9,7 @@ import { useBoardStore, useClientStore } from "Y/store";
 import { api } from "Y/utils/api";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 const stateFields = { history: historyField };
@@ -23,26 +23,42 @@ const Editor = () => {
   const textId = useBoardStore((store) => store.textId);
 
   const setIsSync = useClientStore((store) => store.setIsSync);
+  const forceSync = useClientStore((store) => store.forceSync);
+  const isSync = useClientStore((store) => store.isSync);
+  const setForceSync = useClientStore((store) => store.setForceSync);
 
   const updateBoardStateMutation = api.board.update.useMutation();
   const { data: serverBoard } = api.board.get.useQuery(undefined, {
     enabled: !!sessionData?.user,
   });
 
+  const syncData = useCallback(
+    async (text: string) => {
+      // if server and client exists - update remote
+      if (sessionData?.user) {
+        await updateBoardStateMutation.mutateAsync({
+          id: serverBoard?.id ?? textId,
+          text: text,
+          updatedAt: new Date(),
+          userId: sessionData.user.id,
+        });
+        setIsSync(true);
+      }
+    },
+    [
+      serverBoard?.id,
+      sessionData?.user,
+      setIsSync,
+      textId,
+      updateBoardStateMutation,
+    ],
+  );
+
   const debounceBoardText = useDebouncedCallback(async (text: string) => {
-    // if server and client exists - update remote
-    if (sessionData?.user) {
-      await updateBoardStateMutation.mutateAsync({
-        id: serverBoard?.id ?? textId,
-        text: text,
-        updatedAt: new Date(),
-        userId: sessionData.user.id,
-      });
-      setIsSync(true);
-    }
+    if (!isSync) await syncData(text);
   }, 2000);
 
-  const onChange = React.useCallback(
+  const onChange = useCallback(
     (val: string, viewUpdate: ViewUpdate) => {
       setIsSync(false);
       void debounceBoardText(val);
@@ -51,6 +67,15 @@ const Editor = () => {
     },
     [debounceBoardText, setIsSync, updateBoardState],
   );
+
+  useEffect(() => {
+    if (forceSync && !isSync) {
+      void syncData(boardText ?? "");
+      setForceSync(false);
+      setIsSync(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [forceSync, isSync, setForceSync, setIsSync, syncData]);
 
   return (
     <CodeMirror

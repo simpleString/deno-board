@@ -1,5 +1,5 @@
 import { EditorState } from "@codemirror/state";
-import { xcodeLightInit, xcodeDarkInit } from "@uiw/codemirror-theme-xcode";
+import { xcodeDarkInit, xcodeLightInit } from "@uiw/codemirror-theme-xcode";
 import { Button } from "Y/components/ui/button";
 import { jetBrains } from "Y/pages/_app";
 import { useBoardStore } from "Y/store";
@@ -7,6 +7,7 @@ import { api } from "Y/utils/api";
 import { EditorView } from "codemirror";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import CodeMirrorMerge from "react-codemirror-merge";
 
@@ -54,6 +55,9 @@ const MergeViewer = () => {
 
   return (
     <div>
+      <Head>
+        <title>Deno-board merge</title>
+      </Head>
       <CodeMirrorMerge
         orientation="b-a"
         theme={
