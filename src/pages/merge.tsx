@@ -7,7 +7,6 @@ import { api } from "Y/utils/api";
 import { EditorView } from "codemirror";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import CodeMirrorMerge from "react-codemirror-merge";
 
@@ -55,9 +54,6 @@ const MergeViewer = () => {
 
   return (
     <div>
-      <Head>
-        <title>Deno-board merge</title>
-      </Head>
       <CodeMirrorMerge
         orientation="b-a"
         theme={
