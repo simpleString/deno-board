@@ -2,7 +2,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 
-import { api, getBaseUrl } from "Y/utils/api";
+import { api, getBaseUrl, getBaseUrlAbsolute } from "Y/utils/api";
 
 import { ThemeProvider } from "Y/components/theme-provider";
 import "Y/styles/globals.css";
@@ -28,12 +28,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="keywords" content="note, markdown, editor, offline" />
         <link rel="icon" href={`${getBaseUrl()}/assets/dino.png`} />
 
-        <meta property="og:image" content={`${getBaseUrl()}/assets/dino.png`} />
+        <meta property="og:image" content={`${getBaseUrlAbsolute()}/assets/dino.png`} />
         <meta property="og:image:alt" content="Deno board" />
 
         <meta
           name="twitter:image"
-          content={`${getBaseUrl()}/assets/dino.png`}
+          content={`${getBaseUrlAbsolute()}/assets/dino.png`}
         />
         <meta property="twitter:image:alt" content="Deno board" />
       </Head>
