@@ -2,7 +2,8 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 
-import { api, getBaseUrlAbsolute } from "Y/utils/api";
+import { api } from "Y/utils/api";
+import { env } from "Y/env.js";
 
 import { ThemeProvider } from "Y/components/theme-provider";
 import "Y/styles/globals.css";
@@ -31,10 +32,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           property="og:title"
           content="Deno board - a simple editor with markdown support"
         />
-        <meta
-          property="og:image"
-          content={`${getBaseUrlAbsolute()}/assets/dino.png`}
-        />
+        <meta property="og:image" content={`${env.DOMAIN}/assets/dino.png`} />
 
         <meta
           property="og:description"
@@ -46,10 +44,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           property="twitter:title"
           content="Deno board - a simple editor with markdown support"
         />
-        <meta
-          name="twitter:image"
-          content={`${getBaseUrlAbsolute()}/assets/dino.png`}
-        />
+        <meta name="twitter:image" content={`${env.DOMAIN}/assets/dino.png`} />
         <meta property="twitter:image:alt" content="Deno board" />
 
         <link

@@ -4,8 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogOverlay,
-  DialogPortal,
   DialogTitle,
 } from "Y/components/ui/dialog";
 import { useClientStore } from "Y/store";
