@@ -39,7 +39,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           content="Deno board - a simple editor with markdown support"
         />
         <meta property="og:image:alt" content="Deno board" />
-        <meta property="og:url" content={`https://${env.NEXT_PUBLIC_DOMAIN}`} />
+        <meta property="og:url" content="Deno board" />
 
         <meta property="twitter:card" content="app" />
         <meta
