@@ -23,6 +23,8 @@
     "plugins": [{ "name": "next" }],
     "incremental": true,
 
+    "types": ["@ducanh2912/next-pwa/workbox"],
+
     /* Path Aliases */
     "baseUrl": "./",
     "paths": {

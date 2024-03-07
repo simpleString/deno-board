@@ -2,14 +2,15 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 
-import { api } from "Y/utils/api";
 import { env } from "Y/env.js";
+import { api } from "Y/utils/api";
 
+import { PWALifeCycle } from "Y/components/PWALifeCycle";
 import { ThemeProvider } from "Y/components/theme-provider";
+import { TooltipProvider } from "Y/components/ui/tooltip";
 import "Y/styles/globals.css";
 import { JetBrains_Mono as JetBrains } from "next/font/google";
 import Head from "next/head";
-import { TooltipProvider } from "Y/components/ui/tooltip";
 
 export const jetBrains = JetBrains({
   subsets: ["latin", "cyrillic"],
@@ -75,7 +76,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           sizes="16x16"
           href="favicons/favicon-16x16.png"
         />
-        <link rel="manifest" href="favicons/site.webmanifest" />
+        <link rel="manifest" href="/manifest.json" />
         <link
           rel="mask-icon"
           href="favicons/safari-pinned-tab.svg"
@@ -84,6 +85,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
+      <PWALifeCycle />
       <SessionProvider session={session}>
         <ThemeProvider
           attribute="class"
