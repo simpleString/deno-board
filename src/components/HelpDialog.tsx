@@ -9,7 +9,7 @@ import {
 import { useClientStore } from "Y/store";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const getCtrlKey = () => {
   // @ts-ignore
@@ -43,6 +43,12 @@ const HelpDialog = () => {
   };
 
   const commandKey = getCtrlKey();
+
+  useEffect(() => {
+    if (isOnboarding) {
+      setIsHelpDialogOpen(true);
+    }
+  }, [isOnboarding, setIsHelpDialogOpen]);
 
   return (
     <Dialog open={isHelpDialogOpen} onOpenChange={handleDialogClose}>

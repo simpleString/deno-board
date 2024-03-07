@@ -28,10 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         />
         <meta name="keywords" content="note, markdown, editor, offline" />
 
-        <meta
-          property="og:title"
-          content="Deno board - a simple editor with markdown support"
-        />
+        <meta property="og:title" content="Deno board" />
         <meta
           property="og:image"
           content={`https://${env.NEXT_PUBLIC_DOMAIN}/assets/dino.png`}
@@ -39,12 +36,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
         <meta
           property="og:description"
-          content="And a social description for our cool page"
+          content="Deno board - a simple editor with markdown support"
         />
         <meta property="og:image:alt" content="Deno board" />
+        <meta property="og:url" content={`https://${env.NEXT_PUBLIC_DOMAIN}`} />
 
+        <meta property="twitter:card" content="app" />
         <meta
           property="twitter:title"
+          content="Deno board - a simple editor with markdown support"
+        />
+        <meta
+          property="twitter:description"
           content="Deno board - a simple editor with markdown support"
         />
         <meta
@@ -52,6 +55,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           content={`https://${env.NEXT_PUBLIC_DOMAIN}/assets/dino.png`}
         />
         <meta property="twitter:image:alt" content="Deno board" />
+        <meta property="og:url" content="Deno board" />
 
         <link
           rel="apple-touch-icon"
