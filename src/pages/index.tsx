@@ -108,6 +108,9 @@ const KeyboardHandler = ({
   const decreaseBoardScale = useBoardStore((store) => store.decreaseBoardScale);
 
   const setForceSync = useClientStore((store) => store.setForceSync);
+  const setIsHelpDialogOpen = useClientStore(
+    (store) => store.setHelpDialogOpen,
+  );
 
   const boardText = useBoardStore((store) => store.boardText);
 
@@ -175,6 +178,12 @@ const KeyboardHandler = ({
           ? rightPanelRef.current?.expand()
           : rightPanelRef.current?.collapse();
       }
+
+      // Open setting section
+      if (isCrlKey && e.code === "KeyO") {
+        e.preventDefault();
+        setIsHelpDialogOpen(true);
+      }
     };
   }, [
     decreaseBoardScale,
@@ -183,6 +192,7 @@ const KeyboardHandler = ({
     leftPanelRef,
     rightPanelRef,
     setForceSync,
+    setIsHelpDialogOpen,
   ]);
 
   return undefined;

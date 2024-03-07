@@ -9,6 +9,7 @@ import { ThemeProvider } from "Y/components/theme-provider";
 import "Y/styles/globals.css";
 import { JetBrains_Mono as JetBrains } from "next/font/google";
 import Head from "next/head";
+import { TooltipProvider } from "Y/components/ui/tooltip";
 
 export const jetBrains = JetBrains({
   subsets: ["latin", "cyrillic"],
@@ -90,7 +91,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
           enableSystem
           disableTransitionOnChange
         >
-          <Component {...pageProps} />
+          <TooltipProvider>
+            <Component {...pageProps} />
+          </TooltipProvider>
         </ThemeProvider>
       </SessionProvider>
     </div>

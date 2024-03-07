@@ -1,9 +1,12 @@
 import { Button } from "Y/components/ui/button";
 import { useClientStore } from "Y/store";
-import { Settings } from "lucide-react";
-import { RefreshCcw, RefreshCwOff } from "lucide-react";
+import { getCtrlKey } from "Y/utils/platformUtils";
+import { Cloud, CloudOff, RefreshCcw, Settings } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 const FloatingButtons = () => {
+  const { data: sessionData } = useSession();
+
   const setHelpDialogOpen = useClientStore((store) => store.setHelpDialogOpen);
   const isSync = useClientStore((store) => store.isSync);
 
@@ -13,16 +16,30 @@ const FloatingButtons = () => {
         onClick={() => setHelpDialogOpen(true)}
         variant="outline"
         size="icon"
+        tooltipContent={
+          <>
+            Settings <kbd className="kbd">{getCtrlKey()}</kbd> +
+            <kbd className="kbd">O</kbd>
+          </>
+        }
       >
         <Settings />
       </Button>
-      {isSync ? (
+      {!sessionData ? (
+        <Button
+          variant="ghost"
+          size="icon"
+          tooltipContent="Not connected to server"
+        >
+          <CloudOff />
+        </Button>
+      ) : isSync ? (
         <Button variant="ghost" size="icon">
-          <RefreshCcw />
+          <Cloud />
         </Button>
       ) : (
         <Button variant="ghost" size="icon">
-          <RefreshCwOff />
+          <RefreshCcw className="animate-spin" />
         </Button>
       )}
     </div>

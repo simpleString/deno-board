@@ -1,6 +1,8 @@
+import { Button } from "Y/components/ui/button";
 import { cn } from "Y/lib/utils";
-import * as ResizablePrimitive from "react-resizable-panels";
+import { getCtrlKey } from "Y/utils/platformUtils";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import * as ResizablePrimitive from "react-resizable-panels";
 
 const CustomResizableHandle = ({
   handleLeftPanel,
@@ -23,29 +25,39 @@ const CustomResizableHandle = ({
     {...props}
   >
     {isLeftPanelOpen && (
-      <div
+      <Button
+        tooltipContent={
+          <>
+            Toggle section <kbd className="kbd">{getCtrlKey()}</kbd> +{" "}
+            <kbd className="kbd">B</kbd>
+          </>
+        }
+        size="sm"
         className={cn(
-          "relative z-50 flex cursor-pointer items-center justify-center rounded-full border bg-border",
+          "relative flex h-auto cursor-pointer items-center justify-center rounded-full border bg-border px-0",
           !isRightPanelOpen && "right-6",
         )}
       >
-        <ChevronsLeft
-          size={22}
-          className="z-50 cursor-pointer"
-          onClick={handleLeftPanel}
-        />
-      </div>
+        <ChevronsLeft size={22} onClick={handleLeftPanel} />
+      </Button>
     )}
     {isRightPanelOpen && (
-      <div
+      <Button
+        tooltipContent={
+          <>
+            Toggle section <kbd className="kbd">{getCtrlKey()}</kbd> +{" "}
+            <kbd className="kbd">V</kbd>
+          </>
+        }
+        size="sm"
         className={cn(
-          "relative z-50 flex cursor-pointer items-center justify-center rounded-full border bg-border",
+          "relative flex h-auto cursor-pointer items-center justify-center rounded-full border bg-border px-0",
           !isLeftPanelOpen && "left-6",
         )}
         onClick={handleRightPanel}
       >
-        <ChevronsRight size={22} className="z-50 cursor-pointer" />
-      </div>
+        <ChevronsRight size={22} />
+      </Button>
     )}
   </ResizablePrimitive.PanelResizeHandle>
 );

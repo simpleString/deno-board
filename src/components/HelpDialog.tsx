@@ -7,20 +7,10 @@ import {
   DialogTitle,
 } from "Y/components/ui/dialog";
 import { useClientStore } from "Y/store";
+import { getCtrlKey } from "Y/utils/platformUtils";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-const getCtrlKey = () => {
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const platform = navigator.platform ?? navigator.userAgentData.platform;
-
-  if (/IPHONE|IPAD|IPOD|MAC/.test(platform.toUpperCase())) {
-    return "⌘";
-  }
-  return "Ctrl";
-};
 
 const HelpDialog = () => {
   const { data: sessionData } = useSession();
@@ -93,37 +83,38 @@ const HelpDialog = () => {
           <DialogTitle className="py-4">Hotkeys</DialogTitle>
           <DialogDescription className="grid gap-6">
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">+</kbd> - Increase font size
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">+</kbd> - Increase font size
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">-</kbd> - Dicrease font size
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">-</kbd> - Dicrease font size
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">S</kbd> - Download file
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">S</kbd> - Download file
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">M</kbd> - Download file in markdown
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">M</kbd> - Download file in markdown
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">Y</kbd> - Force sync with server
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">Y</kbd> - Force sync with server
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">Y</kbd> - Force sync with server
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">Y</kbd> - Force sync with server
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">B</kbd> - Toggle editor section
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">B</kbd> - Toggle editor section
             </div>
             <div>
-              <kbd className="kdb">{commandKey}</kbd> +{" "}
-              <kbd className="kdb">V</kbd> - Toggle view section
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">V</kbd> - Toggle view section
             </div>
+
             <ThemeToggle />
             {sessionData?.user ? (
               <div>
