@@ -37,10 +37,7 @@ const useBoard = () => {
         setIsSync(true);
       }
 
-      if (
-        serverBoard.updatedAt !== updatedAtClientBoardText &&
-        isDifferentTexts(serverBoard.text, clientBoardText!)
-      ) {
+      if (isDifferentTexts(serverBoard.text, clientBoardText!)) {
         void router.push("/merge");
       } else {
         setIsSync(true);

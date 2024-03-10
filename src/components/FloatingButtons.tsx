@@ -11,7 +11,7 @@ const FloatingButtons = () => {
   const isSync = useClientStore((store) => store.isSync);
 
   return (
-    <div className="absolute bottom-4 right-4 flex flex-row-reverse gap-4">
+    <div className="absolute bottom-4 right-4 z-50 flex flex-row-reverse gap-4">
       <Button
         onClick={() => setHelpDialogOpen(true)}
         variant="outline"
@@ -34,11 +34,16 @@ const FloatingButtons = () => {
           <CloudOff />
         </Button>
       ) : isSync ? (
-        <Button variant="ghost" size="icon">
+        <Button
+          variant="ghost"
+          size="icon"
+          tooltipContent="
+        Data sync"
+        >
           <Cloud />
         </Button>
       ) : (
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" tooltipContent="Data sincing">
           <RefreshCcw className="animate-spin" />
         </Button>
       )}

@@ -4,18 +4,21 @@ import FloatingButtons from "Y/components/FloatingButtons";
 import HelpDialog from "Y/components/HelpDialog";
 import Viewer from "Y/components/Viewer";
 import { ResizablePanel, ResizablePanelGroup } from "Y/components/ui/resizable";
+import useMobile from "Y/hooks/useMobile";
 import { useBoardStore, useClientStore } from "Y/store";
 import dynamic from "next/dynamic";
 import {
-  type RefObject,
   useCallback,
   useEffect,
   useRef,
   useState,
+  type RefObject,
 } from "react";
 import { type ImperativePanelHandle } from "react-resizable-panels";
 
 const Home = () => {
+  const isMobile = useMobile();
+
   const leftPanelRef = useRef<ImperativePanelHandle>(null);
   const rightPanelRef = useRef<ImperativePanelHandle>(null);
 
@@ -52,7 +55,7 @@ const Home = () => {
         <ResizablePanel
           ref={leftPanelRef}
           collapsedSize={0}
-          minSize={10}
+          minSize={isMobile ? 100 : 10}
           collapsible
           onCollapse={() => setIsLeftPanelOpen(false)}
           onExpand={() => setIsLeftPanelOpen(true)}
@@ -67,7 +70,7 @@ const Home = () => {
         />
         <ResizablePanel
           collapsedSize={0}
-          minSize={10}
+          minSize={isMobile ? 100 : 10}
           collapsible
           ref={rightPanelRef}
           onCollapse={() => setIsRightPanelOpen(false)}
