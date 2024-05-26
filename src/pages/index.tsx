@@ -46,13 +46,14 @@ const Home = () => {
   };
 
   return (
-    <main className="h-screen">
+    <main className="overflow-y-hidden">
       <FloatingWindows
         leftPanelRef={leftPanelRef}
         rightPanelRef={rightPanelRef}
       />
       <ResizablePanelGroup direction="horizontal" autoSaveId="resize-panel">
         <ResizablePanel
+          // className="!overflow-auto"
           ref={leftPanelRef}
           collapsedSize={0}
           minSize={isMobile ? 100 : 10}
@@ -69,6 +70,7 @@ const Home = () => {
           isRightPanelOpen={isRightPanelOpen}
         />
         <ResizablePanel
+          className="!overflow-y-auto"
           collapsedSize={0}
           minSize={isMobile ? 100 : 10}
           collapsible
@@ -135,23 +137,24 @@ const KeyboardHandler = ({
   useEffect(() => {
     window.onkeydown = (e) => {
       const isCrlKey = e.metaKey || e.ctrlKey;
+      const isShiftKey = e.shiftKey;
 
       // Increase font size
-      if (isCrlKey && e.code === "Equal") {
+      if (isCrlKey && isShiftKey && e.code === "Equal") {
         e.preventDefault();
         increaseBoardScale();
       }
 
       // Decrease font size
-      if (isCrlKey && e.code === "Minus") {
+      if (isCrlKey && isShiftKey && e.code === "Minus") {
         e.preventDefault();
         decreaseBoardScale();
       }
 
-      // Download file
+      // Force sync
       if (isCrlKey && e.code === "KeyS") {
         e.preventDefault();
-        downloadFile("txt");
+        setForceSync(true);
       }
 
       // Download file md
@@ -160,10 +163,11 @@ const KeyboardHandler = ({
         downloadFile("md");
       }
 
-      // Force sync
-      if (isCrlKey && e.code === "KeyY") {
+      // Download file
+      if (isCrlKey && isShiftKey && e.code === "KeyS") {
+        console.log("here we go!!");
         e.preventDefault();
-        setForceSync(true);
+        downloadFile("txt");
       }
 
       // Toggle editor section
@@ -175,7 +179,7 @@ const KeyboardHandler = ({
       }
 
       // Toggle view section
-      if (isCrlKey && e.code === "KeyV") {
+      if (isCrlKey && e.code === "KeyL") {
         e.preventDefault();
         rightPanelRef.current?.isCollapsed()
           ? rightPanelRef.current?.expand()

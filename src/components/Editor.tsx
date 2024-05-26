@@ -92,9 +92,9 @@ const Editor = () => {
       }
       style={{
         fontSize: `${16 * boardScale}px`,
+        // height: "100vh",
       }}
-      className="h-full"
-      height="100%"
+      height="100vh"
       extensions={[
         markdown({ base: markdownLanguage, codeLanguages: languages }),
         EditorView.lineWrapping,

@@ -11,6 +11,7 @@ import { TooltipProvider } from "Y/components/ui/tooltip";
 import "Y/styles/globals.css";
 import { JetBrains_Mono as JetBrains } from "next/font/google";
 import Head from "next/head";
+import { cn } from "Y/lib/utils";
 
 export const jetBrains = JetBrains({
   subsets: ["latin", "cyrillic"],
@@ -21,14 +22,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <div className={jetBrains.className}>
+    <div className={cn(jetBrains.className, "fixed w-screen")}>
       <Head>
         <title>Deno board</title>
         <meta
           name="description"
           content="Deno board - a simple editor with markdown support"
         />
-        <meta name="keywords" content="note, markdown, editor, offline" />
+        <meta
+          name="keywords"
+          content="note, markdown, editor, offline, deno-board"
+        />
 
         <meta property="og:title" content="Deno board" />
         <meta

@@ -52,7 +52,11 @@
 @layer base {
   * {
     @apply border-border;
+
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary)) hsl(var(--background));
   }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -14,11 +14,11 @@ const Viewer = () => {
   const boardScale = useBoardStore((store) => store.boardScale);
 
   return (
-    <div className="flex justify-center overflow-auto">
+    <div className="flex h-screen justify-center overflow-auto">
       <MarkdownPreview
         source={boardText}
         style={{ fontSize: `${16 * boardScale}px` }}
-        className="prose prose-sm prose-zinc h-screen w-full max-w-none break-words p-2 dark:prose-invert"
+        className="prose prose-sm prose-zinc h-screen w-full max-w-none overscroll-none break-words p-2 dark:prose-invert"
         rehypeRewrite={(node, _index, parent) => {
           if (
             // @ts-ignore

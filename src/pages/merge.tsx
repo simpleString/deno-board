@@ -11,13 +11,15 @@ import { EditorView } from "codemirror";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CodeMirrorMerge from "react-codemirror-merge";
 
 const Original = CodeMirrorMerge.Original;
 const Modified = CodeMirrorMerge.Modified;
 
 const MergeViewer = () => {
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+
   const { resolvedTheme } = useTheme();
   const utils = api.useUtils();
   const router = useRouter();
@@ -42,20 +44,31 @@ const MergeViewer = () => {
   const updatedAtClientBoardText = useBoardStore((store) => store.updatedAt);
 
   const setClientBoardText = useBoardStore((store) => store.setBoardText);
-  const handleAcceptIncomeChanges = () => {
+  const handleAcceptIncomeChanges = useCallback(() => {
+    setIsLoadingStatus(true);
     setClientBoardText(serverBoard!.text, serverBoard?.updatedAt);
+    setIsLoadingStatus(false);
     void router.push("/");
-  };
+  }, [router, serverBoard, setClientBoardText]);
 
-  const handleAcceptCurrentChanges = async () => {
+  const handleAcceptCurrentChanges = useCallback(async () => {
+    setIsLoadingStatus(true);
     await updateBoardStateMutation.mutateAsync({
       id: serverBoard?.id ?? textId,
       text: clientBoardText!,
       updatedAt: new Date(),
       userId: sessionData!.user.id,
     });
+    setIsLoadingStatus(false);
     await router.push("/");
-  };
+  }, [
+    clientBoardText,
+    router,
+    serverBoard?.id,
+    sessionData,
+    textId,
+    updateBoardStateMutation,
+  ]);
 
   const handleOriginalEditorChange = (
     value: string,
@@ -76,7 +89,7 @@ const MergeViewer = () => {
   if (isLoading) return;
 
   return (
-    <div>
+    <div className="h-screen overflow-y-auto">
       <CodeMirrorMerge
         orientation="b-a"
         revertControls="b-to-a"
@@ -109,13 +122,21 @@ const MergeViewer = () => {
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <div className="grid h-fit gap-4 px-4 py-2 text-center">
           <h1 className="text-xl font-bold">Income changes</h1>
-          <Button onClick={handleAcceptIncomeChanges} className="">
+          <Button
+            onClick={handleAcceptIncomeChanges}
+            className=""
+            disabled={isLoadingStatus}
+          >
             Accept income changes
           </Button>
         </div>
         <div className="grid h-fit gap-4 px-4 py-2 text-center">
           <h1 className="text-xl font-bold">Current state</h1>
-          <Button onClick={handleAcceptCurrentChanges} className="">
+          <Button
+            onClick={handleAcceptCurrentChanges}
+            className=""
+            disabled={isLoadingStatus}
+          >
             Accept current state
           </Button>
           <h1>

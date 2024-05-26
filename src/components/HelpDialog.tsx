@@ -92,6 +92,11 @@ const HelpDialog = () => {
             </div>
             <div>
               <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">S</kbd> - Force sync with server
+            </div>
+            <div>
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">Shift</kbd> +{" "}
               <kbd className="kbd">S</kbd> - Download file
             </div>
             <div>
@@ -100,19 +105,15 @@ const HelpDialog = () => {
             </div>
             <div>
               <kbd className="kbd">{commandKey}</kbd> +{" "}
-              <kbd className="kbd">Y</kbd> - Force sync with server
-            </div>
-            <div>
-              <kbd className="kbd">{commandKey}</kbd> +{" "}
-              <kbd className="kbd">Y</kbd> - Force sync with server
-            </div>
-            <div>
-              <kbd className="kbd">{commandKey}</kbd> +{" "}
               <kbd className="kbd">B</kbd> - Toggle editor section
             </div>
             <div>
               <kbd className="kbd">{commandKey}</kbd> +{" "}
-              <kbd className="kbd">V</kbd> - Toggle view section
+              <kbd className="kbd">L</kbd> - Toggle view section
+            </div>
+            <div>
+              <kbd className="kbd">{commandKey}</kbd> +{" "}
+              <kbd className="kbd">O</kbd> - Open help dialog
             </div>
 
             <ThemeToggle />
